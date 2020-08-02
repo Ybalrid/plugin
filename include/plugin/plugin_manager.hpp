@@ -36,7 +36,7 @@ namespace yba
 		dynamic_library(const std::string& name)
 		{
 			std::string library_name = name;
-			utils::operating_system::sanitize(library_name);
+			utils::operating_system::adapt_library_name(library_name);
 			handle
 				= utils::operating_system::load_dynamic_library(library_name);
 			if(!handle) throw std::runtime_error("Did not load");

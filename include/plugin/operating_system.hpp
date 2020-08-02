@@ -12,7 +12,7 @@
 
 namespace yba::utils::operating_system
 {
-	void sanitize(std::string& library_name)
+	inline void adapt_library_name(std::string& library_name)
 	{
 #ifdef _WIN32
 		//Do nothing
@@ -22,7 +22,7 @@ namespace yba::utils::operating_system
 #endif
 	}
 	
-	[[nodiscard]] void* load_dynamic_library(const std::string& library_name)
+	[[nodiscard]] inline void* load_dynamic_library(const std::string& library_name)
 	{
 #ifdef _WIN32
 		return reinterpret_cast<void*>(LoadLibraryA(library_name.c_str()));
@@ -31,7 +31,7 @@ namespace yba::utils::operating_system
 #endif
 	}
 
-	void unload_dynamic_library(void* lib_handle)
+	inline void unload_dynamic_library(void* lib_handle)
 	{
 #ifdef _WIN32
 		FreeLibrary(HMODULE(lib_handle));
@@ -40,8 +40,8 @@ namespace yba::utils::operating_system
 #endif
 	}
 
-	[[nodiscard]] void* get_proc_address(void* lib_handle,
-										 const std::string& function_name)
+	[[nodiscard]] inline void* get_proc_address(void* lib_handle,
+	                                            const std::string& function_name)
 	{
 
 #ifdef _WIN32
