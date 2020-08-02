@@ -17,7 +17,7 @@ int main()
 	try
 	{
 		yba::plugin_manager my_plugin_manager;
-		const auto* the_plugin = reinterpret_cast<my_plugin*>
+		const auto* the_plugin = dynamic_cast<my_plugin*>
 			(my_plugin_manager.load_plugin("test"));
 
 		printf("%s\n", the_plugin->get_data());

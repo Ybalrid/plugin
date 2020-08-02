@@ -6,13 +6,13 @@ A simple and safe C++ plugin system as a header only library
 
 ## principle
 
-Givein a program (called Host program) that want to load code from a dynamic library (called Plugin library) without any build time dependancy beside an interface definition, this library permit you to do so, really simply by doing the following:
+Given a program (called Host program) that want to load code from a dynamic library (called Plugin library) without any build time dependency beside an interface definition, this library permit you to do so, really simply by doing the following:
 
-Host program instanciate a `plugin_manager` object
+Host program instantiate a `plugin_manager` object
 
 Host program and Plugin library share an interface that derive from `plugin`
 
-Plugin library implements the interface mentionned above, and give a *single exported function* that create an object of that type on the heap and return a pointer.
+Plugin library implements the interface mentioned above, and give a *single exported function* that create an object of that type on the heap and return a pointer.
 
 `plugin_manager` load the library via it's name in an os defined way. It then can access that function and create a `plugin` object from it, and automatically manages it's lifetime. It returns to you a plugin object that you can trust is an instance of the plugin interface, and recast.
 
@@ -48,7 +48,7 @@ Here's what the host program needs to do load and use a plugin via the `yba::plu
 yba::plugin_manager my_plugin_manager;
 
 //Want to load the plugin called "test" that implements a "my_plugin"? do this:
-const auto* the_plugin = reinterpret_cast<my_plugin*>
+const auto* the_plugin = dynamic_cast<my_plugin*>
 	(my_plugin_manager.load_plugin("test"));
 
 //You can talk to it by calling the interface

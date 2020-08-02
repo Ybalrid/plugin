@@ -9,7 +9,6 @@
 
 #include "operating_system.hpp"
 #include "plugin.hpp"
-#include "plugin_bootstrap.hpp"
 
 namespace yba
 {
@@ -32,7 +31,7 @@ namespace yba
 		{
 			*this = std::move(other);
 		}
-		
+
 		dynamic_library() = default;
 		dynamic_library(const std::string& name)
 		{
@@ -45,21 +44,21 @@ namespace yba
 
 		~dynamic_library()
 		{
-			if(handle!=nullptr)
+			if (handle != nullptr)
 				utils::operating_system::unload_dynamic_library(handle);
 			handle = nullptr;
 		}
 
 		plugin* create_plugin_instance()
 		{
-			auto fptr= get_boostrap_function();
+			auto fptr = get_boostrap_function();
 			if (!fptr)
 				throw std::runtime_error("Did not find yplugs bootstrap function in plugin library");
 			return fptr();
 		}
-		
+
 	private:
-		using boostrap_function = plugin* (*)();
+		using boostrap_function = plugin * (*)();
 		boostrap_function get_boostrap_function()
 		{
 			return reinterpret_cast<boostrap_function>(utils::operating_system::get_proc_address(handle, ___YPLUGS_BOOTSTRAP_PROC_NAME_STR));
@@ -68,15 +67,14 @@ namespace yba
 		void* handle = nullptr;
 	};
 
-
 	class plugin_manager
 	{
 	public:
 		plugin_manager() = default;
 		plugin* load_plugin(const std::string& library_name)
 		{
-			decltype(libraries.begin()) library_iterator = libraries.find(library_name);
-			if(library_iterator == libraries.end())
+			auto library_iterator = libraries.find(library_name);
+			if (library_iterator == libraries.end())
 			{
 				libraries[library_name] = dynamic_library(library_name);
 				library_iterator = libraries.find(library_name);
@@ -86,7 +84,7 @@ namespace yba
 
 			plugin* plugin_instance_ptr = library.create_plugin_instance();
 			plugins.emplace_back(plugin_instance_ptr);
-			
+
 			assert((uintptr_t)plugin_instance_ptr == (uintptr_t)plugins.back().get());
 			plugin_instance_ptr->init();
 
@@ -98,10 +96,9 @@ namespace yba
 			for (auto& plugin : plugins)
 				plugin->quit();
 		}
-		
+
 	private:
 		std::unordered_map<std::string, dynamic_library> libraries;
 		std::vector<std::unique_ptr<plugin>> plugins;
 	};
-
 }
