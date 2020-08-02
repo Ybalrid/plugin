@@ -4,7 +4,7 @@
 
 A simple and safe C++ plugin system as a header only library
 
-## priciple
+## principle
 
 Givein a program (called Host program) that want to load code from a dynamic library (called Plugin library) without any build time dependancy beside an interface definition, this library permit you to do so, really simply by doing the following:
 
