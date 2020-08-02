@@ -34,4 +34,6 @@ jobs:
         echo "Build code"
         cmake --build .
         echo "Run test program"
+        ls
+        cd Debug
         .\test_host.exe
