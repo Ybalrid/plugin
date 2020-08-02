@@ -32,6 +32,6 @@ jobs:
         echo "Run CMake to create build system"
         cmake ..
         echo "Build code"
-        make
+        cmaek --build .
         echo "Run test program"
         ./test_host
