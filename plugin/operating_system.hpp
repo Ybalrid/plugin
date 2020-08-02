@@ -1,9 +1,13 @@
 #pragma once
 
+#include <string>
+
 #ifdef _WIN32
 #define NOMINMAX
 #define WIN32_LEAN_AND_MEAN
 #include "Windows.h"
+#else //UNIX
+#include <dlfcn.h>
 #endif
 
 namespace yba::utils::operating_system
@@ -14,6 +18,7 @@ namespace yba::utils::operating_system
 		//Do nothing
 #else
 		//On unix-ish the library name probably needs to start with `lib`
+		library_name = std::string("./lib" + library_name + ".so");
 #endif
 		
 	}
@@ -22,7 +27,7 @@ namespace yba::utils::operating_system
 #ifdef _WIN32
 		return reinterpret_cast<void*>(LoadLibraryA(library_name.c_str()));
 #else
-		static_assert(false) //IMPLEMENT ME
+		return dlopen(library_name.c_str(), RTLD_NOW);
 #endif
 	}
 
@@ -31,7 +36,7 @@ namespace yba::utils::operating_system
 #ifdef _WIN32
 		FreeLibrary(HMODULE(lib_handle));
 #else
-		static_assert(false) //IMPLEMENT ME
+		dlclose(lib_handle);
 #endif
 	}
 
@@ -41,7 +46,7 @@ namespace yba::utils::operating_system
 #ifdef _WIN32
 		return reinterpret_cast<void*>(GetProcAddress(HMODULE(lib_handle), LPCSTR(function_name.c_str())));
 #else
-		static_assert(false) //IMPLEMENT ME
+		return dlsym(lib_handle, function_name.c_str());
 #endif
 	}
 }
