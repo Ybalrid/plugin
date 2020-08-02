@@ -23,7 +23,7 @@ int main()
 	}
 	catch(const std::exception& e)
 	{
-		fprintf(stderr, e.what());
+		fprintf(stderr, "%s\n", e.what());
 		return -1;
 	}
 
