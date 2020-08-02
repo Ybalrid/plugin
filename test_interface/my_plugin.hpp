@@ -2,7 +2,8 @@
 #include "plugin/plugin.hpp"
 
 //Define an interface that derive from yba::plugin
-//This is the actual "plugin" interface 
+//This is the actual "plugin" interface
+
 class my_plugin : public yba::plugin
 {
 public:

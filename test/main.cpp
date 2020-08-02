@@ -2,7 +2,7 @@
 #include <cstdio>
 
 #include "plugin/plugin.hpp"
-#include "test_interface/my_plugin.hpp"
+#include "my_plugin.hpp"
 
 class my_plugin_impl : public my_plugin
 {
@@ -17,17 +17,11 @@ class my_plugin_impl : public my_plugin
 		printf("my_plugin quit (dynamic un-init by plugin manager)\n");
 		return true;
 	}
-	
-public:
-	my_plugin_impl()
-	{
-		printf("my_plugin ctor (deterministic init)\n");
-	}
 
-	~my_plugin_impl()
-	{
-		printf("my_plugin dtor (deterministic un-init)\n");
-	}
+public:
+	my_plugin_impl() { printf("my_plugin ctor (deterministic init)\n"); }
+
+	~my_plugin_impl() { printf("my_plugin dtor (deterministic un-init)\n"); }
 
 	[[nodiscard]] const char* get_data() const final
 	{

@@ -1,8 +1,7 @@
 #include <cstdio>
 
 #include "plugin/plugin_manager.hpp"
-#include "test_interface/my_plugin.hpp"
-
+#include "my_plugin.hpp"
 
 /*
  * Test program:
@@ -17,12 +16,12 @@ int main()
 	try
 	{
 		yba::plugin_manager my_plugin_manager;
-		const auto* the_plugin = dynamic_cast<my_plugin*>
-			(my_plugin_manager.load_plugin("test"));
+		const auto* the_plugin
+			= dynamic_cast<my_plugin*>(my_plugin_manager.load_plugin("test"));
 
 		printf("%s\n", the_plugin->get_data());
 	}
-	catch (const std::exception& e)
+	catch(const std::exception& e)
 	{
 		fprintf(stderr, e.what());
 		return -1;

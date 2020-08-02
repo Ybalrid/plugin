@@ -20,8 +20,8 @@ namespace yba::utils::operating_system
 		//On unix-ish the library name probably needs to start with `lib`
 		library_name = std::string("./lib" + library_name + ".so");
 #endif
-		
 	}
+	
 	[[nodiscard]] void* load_dynamic_library(const std::string& library_name)
 	{
 #ifdef _WIN32
@@ -40,11 +40,13 @@ namespace yba::utils::operating_system
 #endif
 	}
 
-	[[nodiscard]] void* get_proc_address(void* lib_handle, const std::string& function_name)
+	[[nodiscard]] void* get_proc_address(void* lib_handle,
+										 const std::string& function_name)
 	{
 
 #ifdef _WIN32
-		return reinterpret_cast<void*>(GetProcAddress(HMODULE(lib_handle), LPCSTR(function_name.c_str())));
+		return reinterpret_cast<void*>(
+			GetProcAddress(HMODULE(lib_handle), LPCSTR(function_name.c_str())));
 #else
 		return dlsym(lib_handle, function_name.c_str());
 #endif

@@ -4,7 +4,11 @@
 
 A simple and safe C++ plugin system as a header only library
 
-## principle
+## How to use
+
+Add the "include" folder to the include path of a project that want to use the plugin interface and plugin manager.
+
+## Principle
 
 Given a program (called Host program) that want to load code from a dynamic library (called Plugin library) without any build time dependency beside an interface definition, this library permit you to do so, really simply by doing the following:
 
