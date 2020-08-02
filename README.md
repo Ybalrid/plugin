@@ -1,4 +1,4 @@
-# yba::plugin
+# yba::plugin ![CI](https://github.com/Ybalrid/plugin/workflows/CI/badge.svg)
 
 > This is a WIP project
 
