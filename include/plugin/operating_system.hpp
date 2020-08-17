@@ -16,6 +16,8 @@ namespace yba::utils::operating_system
 	{
 #ifdef _WIN32
 		//Do nothing
+#elif __APPLE__
+		library_name = std::string("./lib" + library_name + ".dylib");
 #else
 		//On unix-ish the library name probably needs to start with `lib`
 		library_name = std::string("./lib" + library_name + ".so");
