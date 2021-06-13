@@ -19,7 +19,7 @@ This small library permit you to do so, really simply by doing the following:
 2. Both the *Host program* and the *Plugin library* need to share an interface class that derive from `yba::plugin`
 3. Plugin library contains a class that  implements the interface mentioned above, define one *exported function* (using the `YPLUGS_BOOTSRAP_SIGNATURE` macro) that create an object of that specific type on the heap and return a pointer casted as a `yba::plugin*`
 
-Calling `yba::plugin_manager::load_plugin("my_plugin_name)` will load the dynamic library using the Operating System API. 
+Calling `yba::plugin_manager::load_plugin("my_plugin_name")` will load the dynamic library using the Operating System API. 
 It then can retreive the boostrap function and obtain the `yba::plugin` object from it, and will automatically manages it's lifetime. 
 It returns to you a `yba::plugin` object pointer that you can trust is an instance of the plugin interface, and recast down to the interface type.
 
