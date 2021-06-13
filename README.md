@@ -2,7 +2,7 @@
 
 > This is a WIP project
 
-A simple and safe C++ plugin system as a header only library
+A simple and safe C++ plugin system implemented as a header-only library
 
 ## How to use
 
@@ -10,25 +10,33 @@ Add the "include" folder to the include path of a project that want to use the p
 
 ## Principle
 
-Given a program (called Host program) that want to load code from a dynamic library (called Plugin library) without any build time dependency beside an interface definition, this library permit you to do so, really simply by doing the following:
+A program (that we will call the "Host program") that want to load code from a dynamic library (called "Plugin library") 
+without any build time dependency beside a common interface definition. 
 
-Host program instantiate a `plugin_manager` object
+This small library permit you to do so, really simply by doing the following:
 
-Host program and Plugin library share an interface that derive from `plugin`
+1. The Host program need to instantiate a `yba::plugin_manager` object
+2. Both the *Host program* and the *Plugin library* need to share an interface class that derive from `yba::plugin`
+3. Plugin library contains a class that  implements the interface mentioned above, define one *exported function* (using the `YPLUGS_BOOTSRAP_SIGNATURE` macro) that create an object of that specific type on the heap and return a pointer casted as a `yba::plugin*`
 
-Plugin library implements the interface mentioned above, and give a *single exported function* that create an object of that type on the heap and return a pointer.
+Calling `yba::plugin_manager::load_plugin("my_plugin_name)` will load the dynamic library using the Operating System API. 
+It then can retreive the boostrap function and obtain the `yba::plugin` object from it, and will automatically manages it's lifetime. 
+It returns to you a `yba::plugin` object pointer that you can trust is an instance of the plugin interface, and recast down to the interface type.
 
-`plugin_manager` load the library via it's name in an os defined way. It then can access that function and create a `plugin` object from it, and automatically manages it's lifetime. It returns to you a plugin object that you can trust is an instance of the plugin interface, and recast.
+## Example
 
+Please refer to the content of the 3 "test" directories in the repository: 
 
-Consider the content of the 3 "test" directories. `test` contains the plugin implementation, `test_host` is a program that wants to load external code in a plugin, and `test_interface` define the plugin interface.
+- `test_interface` define the plugin interface. It's files are common to the Host program and Plugin library (as defined above)
+- `test` contains the plugin implementation 
+- `test_host` is a simlple C++ program that wants to load external code in a plugin 
 
-An `yba::plugin` instance's lifetime is defined by 4 events : 
+An `yba::plugin` instance's lifetime is defined by the 4 following events (that correspond to the 4 different member functions that constitute the `yba::plugin` interface, and the class ctor/dtor):
 
-1. Plugin object is created (constructor)
+1. Plugin object is created (bootsrap function call the class contrstructor)
 2. Plugin has been loaded by plugin manager (`bool init()`)
 3. Plugin has been unloaded by plugin manager (`bool quit()`)
-4. Plugin object is destroyed (destructor)
+4. Plugin object is destroyed (class constructor is called because the plugin object owner in `plugin_manager` goes out of scope)
 
 Here's the common interface that is shared between the host program and the plugin (`test_interface/my_plugin.hpp`)
 
@@ -60,6 +68,7 @@ printf("%s\n", the_plugin->get_data());
 ```
 
 Here's the *actual* implementation of the plugin (`test/main.cpp`)
+
 ```cpp
 //Implement an yba::plugin interface in a dynamic library
 #include <cstdio>
@@ -105,5 +114,4 @@ YPLUGS_BOOTSRAP_SIGNATURE()
 	return reinterpret_cast<yba::plugin*>(new my_plugin_impl);
 }
 ```
-
 
