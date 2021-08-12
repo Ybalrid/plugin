@@ -21,11 +21,11 @@ This small library permit you to do so, really simply by doing the following:
 
 Calling `yba::plugin_manager::load_plugin("my_plugin_name)` will load the dynamic library using the Operating System API. 
 It then can retreive the boostrap function and obtain the `yba::plugin` object from it, and will automatically manages it's lifetime. 
-It returns to you a `yba::plugin` object pointer that you can trust is an instance of the plugin interface, and recast down to the interface type.
+It returns to you a `yba::plugin` object pointer that you can trust is an instance of the plugin interface, and recast down to the interface type.
 
 ## Example
 
-Please refer to the content of the 3 "test" directories in the repository: 
+Please refer to the content of the `sample` directory. It contains the following 3 source directory:
 
 - `test_interface` define the plugin interface. It's files are common to the Host program and Plugin library (as defined above)
 - `test` contains the plugin implementation 
